@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { errorHandler } from "./middleware/errorHandler";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import conversationRoutes from "./routes/conversationRoutes";
 import chatRoutes from "./routes/chatRoutes";
 import { client as dynamoDbClient } from "./config/dynamodb";
 
@@ -50,6 +51,7 @@ app.get("/api/health", (_req, res) => {
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/conversations", conversationRoutes);
 app.use("/api/chat", chatRoutes);
 
 // 404 handler

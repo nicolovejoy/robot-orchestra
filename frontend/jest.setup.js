@@ -1,7 +1,7 @@
 // jest.setup.js
 // Setup file for Jest
 
-import "@testing-library/jest-dom";
+require("@testing-library/jest-dom");
 
 // Setup mock for localStorage
 Object.defineProperty(window, "localStorage", {
@@ -12,6 +12,14 @@ Object.defineProperty(window, "localStorage", {
     clear: jest.fn(() => null),
   },
   writable: true,
+});
+
+// Mock fetch globally
+global.fetch = jest.fn();
+
+// Reset all mocks before each test
+beforeEach(() => {
+  jest.clearAllMocks();
 });
 
 // Don't mock these globally - let individual tests handle their own mocking

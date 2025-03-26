@@ -1,6 +1,11 @@
 output "website_url" {
-  description = "Website URL"
-  value       = "https://${var.domain_name}"
+  description = "URL of the website"
+  value       = "https://amianai.com"
+}
+
+output "domain_name" {
+  description = "The domain name for the website"
+  value       = "amianai.com"
 }
 
 output "cloudfront_distribution_id" {
@@ -19,6 +24,21 @@ output "certificate_arn" {
 }
 
 output "api_gateway_url" {
-  description = "API Gateway URL for the backend API"
-  value       = "${aws_api_gateway_deployment.api.invoke_url}"
+  description = "URL of the API Gateway endpoint"
+  value       = aws_api_gateway_deployment.api.invoke_url
+}
+
+output "users_table_name" {
+  description = "Name of the Users DynamoDB table"
+  value       = aws_dynamodb_table.users_table.name
+}
+
+output "interactions_table_name" {
+  description = "Name of the Interactions DynamoDB table"
+  value       = aws_dynamodb_table.interactions_table.name
+}
+
+output "cloudfront_url" {
+  description = "URL of the CloudFront distribution"
+  value       = aws_cloudfront_distribution.website.domain_name
 } 

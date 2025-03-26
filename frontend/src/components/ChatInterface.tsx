@@ -2,9 +2,13 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FiSend } from "react-icons/fi";
+import {
+  generateChatCompletion,
+  ChatMessage as ApiChatMessage,
+} from "@/services/api";
 
 // Define types for our chat data
-type MessageType = "system" | "user";
+type MessageType = "user" | "system";
 
 interface Message {
   id: string;
@@ -27,7 +31,7 @@ export default function ChatInterface() {
   };
 
   // Add a system message with typing animation
-  const addSystemMessage = useCallback((content: string, delay = 1000) => {
+  const addSystemMessage = useCallback((content: string) => {
     setIsTyping(true);
 
     setTimeout(() => {
@@ -41,7 +45,7 @@ export default function ChatInterface() {
         },
       ]);
       setIsTyping(false);
-    }, delay);
+    }, 500);
   }, []);
 
   // Add a user message
@@ -59,6 +63,14 @@ export default function ChatInterface() {
     ]);
   };
 
+  // Convert our UI messages to API format
+  const prepareApiMessages = (messages: Message[]): ApiChatMessage[] => {
+    return messages.map((msg) => ({
+      role: msg.type === "user" ? "user" : "assistant",
+      content: msg.content,
+    }));
+  };
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,20 +79,58 @@ export default function ChatInterface() {
     addUserMessage(inputValue);
     setInputValue("");
 
-    // Simple response logic - can be expanded later
-    handleResponse();
+    // Get AI response
+    handleAiResponse(inputValue);
   };
 
-  // Simple response handler - this can be replaced with API calls later
-  const handleResponse = () => {
-    // Wait a moment before showing the typing indicator
-    setTimeout(() => {
-      // For now, just respond with a follow-up question
+  // Request a response from the AI API
+  const handleAiResponse = async (userInput: string) => {
+    try {
+      // Prepare conversation history
+      const apiMessages = prepareApiMessages(messages);
+
+      // Add user's latest message
+      apiMessages.push({
+        role: "user",
+        content: userInput,
+      });
+
+      // Add a system message if this is the first message
+      if (apiMessages.length === 1) {
+        apiMessages.unshift({
+          role: "system",
+          content:
+            "You are a helpful and friendly assistant. Keep your answers concise and helpful.",
+        });
+      }
+
+      // Show typing indicator while waiting for response
+      setIsTyping(true);
+
+      // Call the API
+      const response = await generateChatCompletion({
+        messages: apiMessages,
+      });
+
+      // Hide typing indicator
+      setIsTyping(false);
+
+      if (response.success && response.data?.message) {
+        addSystemMessage(response.data.message.content);
+      } else {
+        // Handle error gracefully
+        addSystemMessage(
+          "I'm sorry, I'm having trouble responding right now. Please try again later."
+        );
+        console.error("API Error:", response.error);
+      }
+    } catch (error) {
+      setIsTyping(false);
       addSystemMessage(
-        "Thanks for sharing. What brings you to our site today?",
-        1500
+        "I apologize, but I'm experiencing technical difficulties. Please try again later."
       );
-    }, 500);
+      console.error("Chat error:", error);
+    }
   };
 
   // Scroll to bottom when messages change
@@ -96,7 +146,7 @@ export default function ChatInterface() {
     // Only add the initial greeting if it hasn't been sent yet
     if (!hasInitialized) {
       const timer = setTimeout(() => {
-        addSystemMessage("Hello, how are you?", 800);
+        addSystemMessage("Hello! How can I help you today?");
         setHasInitialized(true);
       }, 500);
 
@@ -161,6 +211,7 @@ export default function ChatInterface() {
           type="submit"
           className="px-4 py-2 bg-neon-purple text-white rounded-r-md hover:bg-neon-pink transition-colors"
           aria-label="Send message"
+          disabled={isTyping}
         >
           <FiSend />
         </button>

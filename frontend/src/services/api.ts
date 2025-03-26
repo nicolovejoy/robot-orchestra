@@ -36,6 +36,25 @@ export type User = {
   email: string;
 };
 
+// Chat types
+export type ChatMessage = {
+  role: "system" | "user" | "assistant";
+  content: string;
+};
+
+export type ChatCompletionRequest = {
+  messages: ChatMessage[];
+  model?: string;
+};
+
+export type ChatCompletionResponse = {
+  success: boolean;
+  data?: {
+    message: ChatMessage;
+  };
+  error?: string;
+};
+
 // Auth API endpoints
 export const loginUser = async (
   credentials: LoginCredentials
@@ -111,4 +130,42 @@ export const getUserProfile = async (): Promise<UserProfile> => {
     joined: new Date().toISOString(),
     usageCount: Math.floor(Math.random() * 50),
   };
+};
+
+// Chat API endpoints
+export const generateChatCompletion = async (
+  request: ChatCompletionRequest
+): Promise<ChatCompletionResponse> => {
+  try {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+    const response = await fetch(`${API_URL}/api/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to generate chat completion");
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Chat API error:", error.message);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+
+    return {
+      success: false,
+      error: "An unknown error occurred",
+    };
+  }
 };

@@ -322,37 +322,6 @@ resource "aws_dynamodb_table" "users_table" {
   tags = var.tags
 }
 
-resource "aws_dynamodb_table" "conversations_table" {
-  name         = "${var.environment}-conversations"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "pk"
-  range_key    = "sk"
-
-  attribute {
-    name = "pk"
-    type = "S"
-  }
-
-  attribute {
-    name = "sk"
-    type = "S"
-  }
-
-  attribute {
-    name = "lastMessageTimestamp"
-    type = "N"
-  }
-
-  global_secondary_index {
-    name            = "LastMessageIndex"
-    hash_key        = "pk"
-    range_key       = "lastMessageTimestamp"
-    projection_type = "ALL"
-  }
-
-  tags = var.tags
-}
-
 resource "aws_dynamodb_table" "interactions_table" {
   name         = "${var.environment}-interactions"
   billing_mode = "PAY_PER_REQUEST"
@@ -435,7 +404,6 @@ resource "aws_lambda_function" "api" {
     variables = {
       NODE_ENV                 = var.environment
       DYNAMODB_USERS_TABLE     = aws_dynamodb_table.users_table.name
-      DYNAMODB_CONVERSATIONS_TABLE = aws_dynamodb_table.conversations_table.name
       DYNAMODB_INTERACTIONS_TABLE  = aws_dynamodb_table.interactions_table.name
     }
   }
@@ -483,10 +451,8 @@ resource "aws_iam_policy" "lambda_dynamodb_policy" {
         Effect = "Allow"
         Resource = [
           aws_dynamodb_table.users_table.arn,
-          aws_dynamodb_table.conversations_table.arn,
           aws_dynamodb_table.interactions_table.arn,
           "${aws_dynamodb_table.users_table.arn}/index/*",
-          "${aws_dynamodb_table.conversations_table.arn}/index/*",
           "${aws_dynamodb_table.interactions_table.arn}/index/*"
         ]
       }
@@ -530,7 +496,7 @@ resource "aws_api_gateway_method" "proxy" {
   rest_api_id   = aws_api_gateway_rest_api.api.id
   resource_id   = aws_api_gateway_resource.proxy.id
   http_method   = "ANY"
-  authorization_type = "NONE"
+  authorization = "NONE"
 }
 
 # API Gateway integration with Lambda

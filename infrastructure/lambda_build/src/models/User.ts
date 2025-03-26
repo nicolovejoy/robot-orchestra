@@ -16,10 +16,6 @@ export interface IUser {
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  lastLogin?: Date;
-  usageCount?: number;
-  isVerified?: boolean;
-  role?: string;
 }
 
 // Utility function to hash a password
