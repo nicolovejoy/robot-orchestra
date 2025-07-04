@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useSessionStore, Identity } from '@/store/sessionStore';
+import { useSessionStore, Identity } from "../lib/sessionStore';
 import { Card, Button } from './ui';
 
 interface MusicianRecognitionProps {

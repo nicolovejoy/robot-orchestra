@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { useSessionStore } from "@/store/sessionStore";
+import { useAuth } from "../lib/AuthContext";
+import { useSessionStore } from "../lib/sessionStore"";
 import { Card, Button } from "./ui";
 
 // Mock data for MVP phase

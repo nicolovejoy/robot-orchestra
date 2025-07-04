@@ -1,6 +1,6 @@
 'use client';
 
-import { useSessionStore } from '@/store/sessionStore';
+import { useSessionStore } from "../lib/sessionStore';
 import PromptDisplay from './PromptDisplay';
 import PhraseComposer from './ResponseInput';
 import MusicianRecognition from './RoundVoting';

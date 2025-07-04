@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useSessionStore } from '@/store/sessionStore';
+import { useSessionStore } from "../lib/sessionStore';
 import { Card, Button } from './ui';
 import { FiSend } from 'react-icons/fi';
 

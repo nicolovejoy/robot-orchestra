@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { FiSend, FiLogOut } from 'react-icons/fi';
-import { useSessionStore } from '@/store/sessionStore';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSessionStore } from "../lib/sessionStore';
+import { useAuth } from "../lib/AuthContext';
 import MessageList from './MessageList';
 import ParticipantBar from './ParticipantBar';
 import SessionTimer from './SessionTimer';

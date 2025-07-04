@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { FiSend } from 'react-icons/fi';
-import { PLAYER_CONFIG } from '../config/playerConfig';
+import { PLAYER_CONFIG } from '../lib/playerConfig';
 import { Card } from './ui';
 
 interface PlayerInputProps {

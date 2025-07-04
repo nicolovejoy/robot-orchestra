@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import SessionTimer from '../SessionTimer';
-import { useSessionStore } from '@/store/sessionStore';
+import { useSessionStore } from "../lib/sessionStore';
 
 // Mock the session store
 jest.mock('@/store/sessionStore');

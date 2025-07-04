@@ -1,5 +1,5 @@
 import './globals.css';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthProvider } from "../lib/AuthContext';
 
 export const metadata = {
   title: 'AmIAnAI v2 - 2H+2AI Conversations',

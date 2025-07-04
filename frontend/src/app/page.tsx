@@ -1,6 +1,6 @@
 'use client';
 
-import { useSessionStore } from '@/store/sessionStore';
+import { useSessionStore } from "../lib/sessionStore';
 import ChatInterface from '@/components/ChatInterface';
 import WelcomeDashboard from '@/components/WelcomeDashboard';
 import { Navigation } from '@/components/Navigation';

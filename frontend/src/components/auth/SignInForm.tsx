@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { cognitoService } from '../../services/cognito';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from "../lib/AuthContext';
 import { SignInFormData, AuthError } from '../../types/auth';
 import { Card, Button, Input } from '../ui';
 

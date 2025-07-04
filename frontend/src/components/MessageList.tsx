@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useSessionStore } from '@/store/sessionStore';
+import { useSessionStore } from "../lib/sessionStore';
 import { MessageBubble } from './ui';
 
 export default function MessageList() {

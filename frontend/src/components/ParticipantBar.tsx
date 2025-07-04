@@ -1,6 +1,6 @@
 'use client';
 
-import { useSessionStore, Identity } from '@/store/sessionStore';
+import { useSessionStore, Identity } from "../lib/sessionStore';
 
 export default function ParticipantBar() {
   const { match, myIdentity } = useSessionStore();

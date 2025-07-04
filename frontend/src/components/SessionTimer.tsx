@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useSessionStore } from '@/store/sessionStore';
+import { useSessionStore } from "../lib/sessionStore';
 
 export default function SessionTimer() {
   const { timeRemaining, isSessionActive, updateTimer } = useSessionStore();
