@@ -1,6 +1,46 @@
 # RobotOrchestra Current Status
 
-**Last Updated: 2025-07-25**
+**Last Updated: 2026-04-09**
+
+## 💤 MOTHBALLED (2026-04-09)
+
+The project has been put on ice. All AWS infrastructure was destroyed via `terraform destroy` on 2026-04-09. Source code and documentation are preserved in this repo.
+
+**Why mothballed:** Experimental project, no active development, Cloudflare showed ~1.2k unique visitors/month but only 2 real human sign-ups (one completed a full match, one abandoned mid-round). Rest of the traffic was bots and credential probing. Not worth keeping deployed while dormant.
+
+**What was destroyed:**
+- Cognito user pool (both sign-ups lost: `onyx_analog.50@icloud.com`, `k@uv.ag`)
+- DynamoDB tables (`robot-orchestra-matches`, `robot-orchestra-users`)
+- Lambda functions, API Gateway, all IAM roles
+- CloudFront distribution, S3 buckets (`robotorchestra.org`, CloudTrail logs bucket)
+- Route53 hosted zone (DNS still served by Cloudflare externally)
+- CloudWatch dashboards, log groups, CloudTrail trail
+
+**What survived:**
+- Terraform state backend S3 bucket (bootstrapped outside this stack — leave it alone, needed for re-deploy)
+- Cloudflare proxy config for `robotorchestra.org` (handled separately from AWS)
+- Domain registration at Cloudflare (expires 2027-07-04)
+- All source code in this repo
+
+### Resurrection Procedure
+
+When you come back to this project:
+
+1. **Review stale state.** This doc and `ROADMAP.md` still reflect pre-mothball plans. The code compiles but hasn't been exercised in production since 2025-07-24.
+2. **Re-deploy infrastructure:** `cd infrastructure && terraform plan` then `terraform apply`. Expect the first apply to take 15–30 minutes (CloudFront propagation).
+3. **Deploy code:** `./scripts/deploy-lambdas.sh` then `./scripts/deploy-frontend.sh` from `infrastructure/`.
+4. **Re-seed AI users:** run `lambda/src/scripts/init-ai-users.ts` against the new DynamoDB users table.
+5. **Verify Cloudflare proxy** still points at the new CloudFront distribution. New distro = new hostname, so the Cloudflare DNS CNAME will need updating.
+6. **Turn on Cloudflare's leaked-credentials mitigation** (banner at the top of the Cloudflare dashboard) before exposing the Cognito sign-up flow publicly again — bots were actively probing the login.
+
+### Known Pre-Mothball Bugs (unfixed)
+
+- **AI prompt generation fallback:** Bedrock model name format mismatch. Falls back to hardcoded prompts. Likely fix: use `claude-3-haiku-20240307` full identifier. See notes below.
+- **No invite code input on dashboard:** Multi-player joins require the full URL.
+- **Identity system hard-coded to 4 players:** Uses A/B/C/D fields instead of userId + displayPosition. Blocks the N-player templates. See `IDENTITY_REFACTOR_PLAN.md`.
+- **Invite code lookup uses table scan** (no GSI). Fine at experimental scale, would need fixing before real traffic.
+
+---
 
 ## 🚀 Recently Completed
 

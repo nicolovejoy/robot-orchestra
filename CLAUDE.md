@@ -2,6 +2,10 @@
 
 **⚠️ READ CAREFULLY: Each new Claude conversation MUST read and follow ALL rules in this document.**
 
+## 💤 PROJECT MOTHBALLED (2026-04-09)
+
+All AWS infrastructure has been destroyed via `terraform destroy`. Source code is preserved. Before making any changes that touch infrastructure, deploy scripts, or assume a live site, read the "MOTHBALLED" section of `CURRENT_STATUS.md` for the resurrection procedure. Code edits and local iteration are fine — just don't assume `terraform plan` will show "no changes" or that the site is live.
+
 ## Project Overview
 
 User prefers no positive feedback, just discuss accurately and clearly. Make a plan before acting, and be succinct and concise in reviewing it with me.

@@ -2,9 +2,9 @@
 
 **A game where humans try to blend in with AI players.**
 
-One human joins three AI participants responding to creative prompts. Players vote to identify who's human. Now supports multi-human matches (2v2)!
+One human joins three AI participants responding to creative prompts. Players vote to identify who's human. Supports multi-human matches (2v2).
 
-🚀 **Live**: [robotorchestra.org](https://robotorchestra.org)
+> 💤 **Mothballed as of 2026-04-09.** All AWS infrastructure has been destroyed via `terraform destroy`. Source code is preserved and the project can be resurrected at any time — see [CURRENT_STATUS.md](./CURRENT_STATUS.md) for the resurrection procedure.
 
 ## Architecture
 
@@ -32,12 +32,15 @@ terraform apply                # Infrastructure
 
 ## Status
 
-✅ **Working**: Full game flow with voting, identity reveal, and match history  
-✅ **Phase 1 Complete**: User system foundation with persistent AI agents  
-✅ **Phase 2 Complete**: Multi-human matches (1v3 and 2v2) with invite codes  
-✅ **Admin Tools**: Debug mode for monitoring AI behavior and CloudWatch dashboards  
-🔧 **In Progress**: Fixing AI prompt generation, adding invite code input  
-🔜 **Next**: Identity refactor, real-time updates, performance optimizations
+💤 **Mothballed** (2026-04-09). AWS resources destroyed. Code intact. See CURRENT_STATUS.md.
+
+Last working state before mothball:
+
+- Full game flow with voting, identity reveal, and match history
+- User system foundation with persistent AI agents
+- Multi-human matches (1v3 and 2v2) with invite codes
+- Admin debug mode and CloudWatch dashboards
+- Outstanding bugs: AI prompt generation fallback, no invite code input field, identity system hard-coded to 4 players
 
 ## Documentation
 
