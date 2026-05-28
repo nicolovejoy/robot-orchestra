@@ -1,12 +1,21 @@
 # RobotOrchestra Current Status
 
-**Last Updated: 2026-04-09**
+**Last Updated: 2026-05-28**
 
 ## 💤 MOTHBALLED (2026-04-09)
 
 The project has been put on ice. All AWS infrastructure was destroyed via `terraform destroy` on 2026-04-09. Source code and documentation are preserved in this repo.
 
 **Why mothballed:** Experimental project, no active development, Cloudflare showed ~1.2k unique visitors/month but only 2 real human sign-ups (one completed a full match, one abandoned mid-round). Rest of the traffic was bots and credential probing. Not worth keeping deployed while dormant.
+
+### Post-destroy cleanup (2026-05-28)
+
+`terraform destroy` left orphans behind that kept billing or cluttering the account. Cleaned up manually:
+- 3 Route53 hosted zones for `robotorchestra.org` (~$1.50/mo bleeding) — deleted via console
+- 3 ACM public certs for `robotorchestra.org` in us-east-1 — deleted via CLI (free but would have failed renewal anyway)
+- CloudWatch log group `/aws/lambda/robot-orchestra-ai-service` — deleted via CLI
+
+Verified clean: no Lambda, DynamoDB, CloudFront, API Gateway, Cognito, S3, IAM, SQS, SNS, alarms, dashboards, EventBridge rules, KMS, ECR, WAF, or load balancers tied to this project remain in the account.
 
 **What was destroyed:**
 - Cognito user pool (both sign-ups lost: `onyx_analog.50@icloud.com`, `k@uv.ag`)
